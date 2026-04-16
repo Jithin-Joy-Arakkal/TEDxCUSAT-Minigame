@@ -15,11 +15,17 @@
     <div id="game-screen" style="display: none;">
         <canvas id="game-canvas" width="800" height="600"></canvas>
         <div id="score">Score: 0</div>
+        <div id="misses">Misses: 0</div>
         <button id="restart-btn" style="display: none;">Restart</button>
         <div id="win-screen" style="display: none;">
             <h2>Congratulations!</h2>
             <p>You've collected 10 ideas and spread knowledge at TEDxCUSAT!</p>
             <button id="win-restart-btn">Play Again</button>
+        </div>
+        <div id="lose-screen" style="display: none;">
+            <h2>Game Over!</h2>
+            <p>You missed too many ideas. Try again to spread knowledge!</p>
+            <button id="lose-restart-btn">Try Again</button>
         </div>
     </div>
     <script src="script.js"></script>

@@ -8,8 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const scoreDisplay = document.getElementById('score');
     const winScreen = document.getElementById('win-screen');
     const winRestartBtn = document.getElementById('win-restart-btn');
+    const missesDisplay = document.getElementById('misses');
+    const loseScreen = document.getElementById('lose-screen');
+    const loseRestartBtn = document.getElementById('lose-restart-btn');
 
     let score = 0;
+    let misses = 0;
     let ideas = [];
     let gameRunning = false;
     let animationId;
@@ -43,14 +47,17 @@ document.addEventListener('DOMContentLoaded', () => {
         startScreen.style.display = 'none';
         gameScreen.style.display = 'block';
         // Set canvas size
-        canvas.width = Math.min(window.innerWidth - 40, 800);
-        canvas.height = Math.min(window.innerHeight - 150, 600);
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
         score = 0;
+        misses = 0;
         ideas = [];
         gameRunning = true;
         scoreDisplay.textContent = 'Score: 0';
+        missesDisplay.textContent = 'Misses: 0';
         restartBtn.style.display = 'none';
         winScreen.style.display = 'none';
+        loseScreen.style.display = 'none';
         gameLoop();
     }
 
@@ -69,11 +76,20 @@ document.addEventListener('DOMContentLoaded', () => {
             idea.update();
             idea.draw();
 
-            // Remove if off screen
+            // Remove if off screen and increment misses
             if (idea.y > canvas.height) {
                 ideas.splice(index, 1);
+                misses++;
+                missesDisplay.textContent = `Misses: ${misses}`;
             }
         });
+
+        // Check lose condition
+        if (misses >= 3) {
+            gameRunning = false;
+            loseScreen.style.display = 'block';
+            return;
+        }
 
         // Check win condition
         if (score >= 10) {
@@ -125,11 +141,15 @@ document.addEventListener('DOMContentLoaded', () => {
         winScreen.style.display = 'none';
         startGame();
     });
+    loseRestartBtn.addEventListener('click', () => {
+        loseScreen.style.display = 'none';
+        startGame();
+    });
 
     window.addEventListener('resize', () => {
         if (gameRunning) {
-            canvas.width = Math.min(window.innerWidth - 40, 800);
-            canvas.height = Math.min(window.innerHeight - 150, 600);
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
         }
     });
 });
